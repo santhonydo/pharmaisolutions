@@ -1122,3 +1122,35 @@ a:hover {
 .pulse {
   animation: pulse 2s infinite;
 }
+
+/* Fix for button hover text disappearing */
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.nav-cta:hover,
+.footer-contact .btn:hover {
+  color: white !important; /* Force white text on hover */
+}
+
+/* Ensure consistent text color for all buttons */
+.btn,
+.btn-primary,
+.btn-secondary,
+.nav-cta,
+.footer-contact .btn {
+  color: white;
+}
+
+/* Add spacing below the about header */
+.about h2 {
+  margin-bottom: 2rem; /* Increase from default spacing */
+}
+
+/* You can also add spacing to all section headers for consistency */
+.benefits h2,
+.services h2,
+.ai-advantage h2,
+.testimonials h2,
+.about h2 {
+  margin-bottom: 2rem;
+}
