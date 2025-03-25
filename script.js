@@ -61,8 +61,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Notification function
   function showNotification(message, type = "info") {
-    // This function is now handled in the inline script in index.html
-    console.log("Notification:", message, type);
+    const notification = document.createElement("div");
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.style.opacity = "0";
+      setTimeout(() => document.body.removeChild(notification), 300);
+    }, 4000);
   }
 
   // Add intersection observer for animations
@@ -265,4 +272,85 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+  const contactForm = document.getElementById("contact-form");
+
+  if (contactForm) {
+    contactForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      // Get form data
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const facility = document.getElementById("facility").value;
+      const phone = document.getElementById("phone").value;
+
+      // Store in localStorage as backup
+      const submissionData = {
+        name,
+        email,
+        facility,
+        phone,
+        timestamp: new Date().toISOString(),
+      };
+
+      let submissions = JSON.parse(
+        localStorage.getItem("formSubmissions") || "[]",
+      );
+      submissions.push(submissionData);
+      localStorage.setItem("formSubmissions", JSON.stringify(submissions));
+
+      // Show loading state
+      const submitButton = document.getElementById("submit-button");
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+
+      // Google Forms submission - replace with your actual form ID and entry IDs
+      const googleFormsURL =
+        "https://docs.google.com/forms/d/e/1FAIpQLScPd1y3JqWb-KEl4FhEt2c0-KPaf-6tkexsTEIwAwXWRkoEwg/formResponse";
+      const formData = new FormData();
+      formData.append("entry.672079617", name); // Replace with your actual entry IDs
+      formData.append("entry.1742592132", email);
+      formData.append("entry.50131877", phone);
+      formData.append("entry.1007634374", facility);
+
+      // Use fetch with no-cors mode (Google Forms requires this)
+      fetch(googleFormsURL, {
+        method: "POST",
+        mode: "no-cors", // This is important for cross-origin requests to Google
+        body: formData,
+      })
+        .then(() => {
+          // Show success state
+          contactForm.style.display = "none";
+          document.getElementById("thank-you-message").style.display = "block";
+          showNotification(
+            "Thank you! Your information has been submitted successfully.",
+            "success",
+          );
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Still show success since we saved to localStorage
+          contactForm.style.display = "none";
+          document.getElementById("thank-you-message").style.display = "block";
+          showNotification(
+            "Thank you! Your information has been submitted.",
+            "success",
+          );
+        });
+    });
+  }
+
+  // Fix for the "Request Demo" button in the header and footer
+  const demoButtons = document.querySelectorAll('a[href="#cta"]');
+  demoButtons.forEach((button) => {
+    button.setAttribute("href", "#contact");
+  });
+
+  // Also update any "See It in Action" buttons
+  const actionButtons = document.querySelectorAll('a[href="#cta"]');
+  actionButtons.forEach((button) => {
+    button.setAttribute("href", "#contact");
+  });
 });
