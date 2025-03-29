@@ -436,6 +436,9 @@ a:hover {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .team-member {
@@ -445,6 +448,8 @@ a:hover {
   overflow: hidden;
   transition: var(--transition);
   border: 1px solid var(--gray-light);
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .team-member:hover {
@@ -453,15 +458,23 @@ a:hover {
 }
 
 .member-image {
-  height: 250px;
+  height: 400px;
   overflow: hidden;
+  position: relative;
+  background-color: var(--gray-light);
 }
 
 .member-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 15%;
   border-radius: 0;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover .member-image img {
+  transform: scale(1.05);
 }
 
 .team-member h3 {
@@ -562,7 +575,10 @@ a:hover {
 
   .team-member {
     max-width: 350px;
-    margin: 0 auto;
+  }
+
+  .member-image {
+    height: 300px;
   }
 }
 
@@ -1153,4 +1169,69 @@ a:hover {
 .testimonials h2,
 .about h2 {
   margin-bottom: 2rem;
+}
+
+.logo-showcase {
+  padding: 4rem 0;
+  background: linear-gradient(to bottom, var(--white), var(--bg-light));
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.logo-showcase-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--heading-color);
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-light);
+}
+
+.institution-logo {
+  height: 45px;
+  opacity: 0.75;
+  transition: all 0.3s ease;
+  filter: grayscale(100%);
+}
+
+.institution-logo:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .logo-showcase {
+    padding: 3rem 0;
+  }
+
+  .logo-showcase-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+  
+  .logo-container {
+    gap: 2.5rem;
+    padding: 1.5rem;
+  }
+  
+  .institution-logo {
+    height: 35px;
+  }
 }
